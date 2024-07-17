@@ -9,5 +9,12 @@ return [
             'middleware' => ['api'],
             'prefix' => 'api/auth',
         ],
+
+        // Author API Routes
+        [
+            'path' => base_path('routes/author/routes.php'),
+            'middleware' => ['api', 'auth:api'],
+            'prefix' => 'api/authors',
+        ],
     ],
 ];
