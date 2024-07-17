@@ -27,4 +27,9 @@ class AuthorService
     {
         return $this->repository->update($attributes, $id);
     }
+
+    public function deleteService($id)
+    {
+        return $this->repository->delete($id);
+    }
 }

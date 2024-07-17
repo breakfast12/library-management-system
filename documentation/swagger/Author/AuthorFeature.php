@@ -379,4 +379,76 @@ class AuthorFeature extends Swagger
     {
         //
     }
+
+    /**
+     * @OA\Delete(
+     *    path="/api/authors/{id}",
+     *    tags={"Author"},
+     *    summary="Delete Author",
+     *    description="Delete author data.",
+     *    security={{"passport":{}}},
+     *
+     *    @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Success",
+     *
+     *        @OA\JsonContent(
+     *           example={
+     *              "status": "success",
+     *              "message": "Successfully Deleted Author."
+     *           }
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=400,
+     *        description="Bad Request",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "id": {
+     *                          "Author ID does not exist."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Author ID does not exist.",
+     *          ),
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
+     *     ),
+     * )
+     */
+    public function destroy()
+    {
+        //
+    }
 }

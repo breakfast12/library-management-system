@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Author\DetailAuthorRequest;
+use App\Http\Requests\Author\ParamAuthorRequest;
 use App\Http\Requests\Author\StoreAuthorRequest;
 use App\Http\Requests\Author\UpdateAuthorRequest;
 use App\Http\Resources\Author\AuthorResource;
@@ -67,11 +67,11 @@ class AuthorController extends Controller
     /**
      * Show the detail author.
      *
-     * @param DetailAuthorRequest
+     * @param ParamAuthorRequest
      * @param int
      * @return DetailAuthorResource|\Illuminate\Http\JsonResponse
      */
-    public function show(DetailAuthorRequest $request, int $id)
+    public function show(ParamAuthorRequest $request, int $id)
     {
         try {
             // Call the service to find the author by id
@@ -118,10 +118,29 @@ class AuthorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft delete author.
+     *
+     * @param ParamAuthorRequest
+     * @param int
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(ParamAuthorRequest $request, int $id)
     {
-        //
+        try {
+            // Call the service to soft delete the author by id
+            $this->service->deleteService($id);
+
+            // Return a success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully Deleted Author.',
+            ], 200);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 }

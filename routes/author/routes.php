@@ -13,3 +13,5 @@ Route::get('/{id}', [AuthorController::class, 'show'])
     ->name('api.authors.show');
 Route::put('/{id}', [AuthorController::class, 'update'])
     ->name('api.authors.update');
+Route::delete('/{id}', [AuthorController::class, 'destroy'])
+    ->name('api.authors.destroy');
