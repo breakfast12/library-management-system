@@ -268,6 +268,150 @@
                     }
                 ]
             }
+        },
+        "/api/authors/{id}": {
+            "put": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Update Author",
+                "description": "Update author and returns success response.",
+                "operationId": "7d22ef3152a61b8742aa01666b42fea7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Author data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "name": "Budi",
+                                "bio": "Hidup harus dicobain",
+                                "birth_date": "1998-10-10"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Updated Author."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Author ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Author ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-2": {
+                                        "summary": "Name is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "name": [
+                                                    "Name is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-3": {
+                                        "summary": "Bio is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "bio": [
+                                                    "Bio is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-4": {
+                                        "summary": "Birth date is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "birth_date": [
+                                                    "Birth date is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-5": {
+                                        "summary": "Birth date must be valid date.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "birth_date": [
+                                                    "Birth date must be valid date."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-6": {
+                                        "summary": "Name has already been taken.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "name": [
+                                                    "Name has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
         }
     },
     "tags": [

@@ -66,7 +66,7 @@ class AuthorFeature extends Swagger
      *              value={
      *                  "status": "error",
      *                  "message": {
-     *                      "name" : {
+     *                      "name": {
      *                          "Name is required."
      *                      }
      *                  }
@@ -142,6 +142,160 @@ class AuthorFeature extends Swagger
      * )
      */
     public function store()
+    {
+        //
+    }
+
+    /**
+     * @OA\Put(
+     *    path="/api/authors/{id}",
+     *    tags={"Author"},
+     *    summary="Update Author",
+     *    description="Update author and returns success response.",
+     *    security={{"passport":{}}},
+     *
+     *    @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *    ),
+     *
+     *    @OA\RequestBody(
+     *      required=true,
+     *      description="Author data",
+     *
+     *      @OA\JsonContent(
+     *        example={
+     *          "name": "Budi",
+     *          "bio": "Hidup harus dicobain",
+     *          "birth_date": "1998-10-10"
+     *        }
+     *      ),
+     *
+     *      @OA\Schema(
+     *          type="object",
+     *          required={"name", "bio", "birth_date"},
+     *
+     *          @OA\Property(property="name", type="string"),
+     *          @OA\Property(property="bio", type="text"),
+     *          @OA\Property(property="birth_date", type="date"),
+     *      ),
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Success",
+     *
+     *        @OA\JsonContent(
+     *           example={
+     *              "status": "success",
+     *              "message": "Successfully Updated Author."
+     *           }
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=400,
+     *        description="Bad Request",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "id": {
+     *                          "Author ID does not exist."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Author ID does not exist.",
+     *          ),
+     *          @OA\Examples(
+     *              example="error-2",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "name": {
+     *                          "Name is required."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Name is required.",
+     *          ),
+     *          @OA\Examples(
+     *              example="error-3",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "bio": {
+     *                          "Bio is required."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Bio is required.",
+     *          ),
+     *          @OA\Examples(
+     *              example="error-4",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "birth_date": {
+     *                          "Birth date is required."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Birth date is required.",
+     *          ),
+     *          @OA\Examples(
+     *              example="error-5",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "birth_date": {
+     *                          "Birth date must be valid date."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Birth date must be valid date.",
+     *          ),
+     *          @OA\Examples(
+     *              example="error-6",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "name": {
+     *                          "Name has already been taken."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Name has already been taken.",
+     *          ),
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
+     *     ),
+     * )
+     */
+    public function update()
     {
         //
     }

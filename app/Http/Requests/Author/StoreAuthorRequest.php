@@ -5,7 +5,7 @@ namespace App\Http\Requests\Author;
 use App\Http\Requests\BaseFormRequest;
 use App\Rules\AuthorUnique;
 
-class AuthorRequest extends BaseFormRequest
+class StoreAuthorRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

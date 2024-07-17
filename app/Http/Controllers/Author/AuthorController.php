@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Author\AuthorRequest;
+use App\Http\Requests\Author\StoreAuthorRequest;
+use App\Http\Requests\Author\UpdateAuthorRequest;
 use App\Http\Resources\Author\AuthorResource;
 use App\Http\Services\Author\AuthorService;
 use Illuminate\Http\Request;
@@ -13,14 +14,14 @@ class AuthorController extends Controller
     /**
      * The service instance to handle author operations.
      *
-     * @var \App\Services\AuthorService
+     * @var AuthorService
      */
     protected $service;
 
     /**
      * Constructor to initialize the service.
      *
-     * @param \App\Services\AuthorService
+     * @param AuthorService
      */
     public function __construct(AuthorService $authorService)
     {
@@ -38,10 +39,10 @@ class AuthorController extends Controller
     /**
      * Store a new author.
      *
-     * @param \App\Http\Requests\AuthorRequest
-     * @return \App\Http\Resources\AuthorResource|\Illuminate\Http\JsonResponse
+     * @param StoreAuthorRequest
+     * @return AuthorResource|\Illuminate\Http\JsonResponse
      */
-    public function store(AuthorRequest $request)
+    public function store(StoreAuthorRequest $request)
     {
         // Validate the input data from the request
         $inputData = $request->validated();
@@ -70,11 +71,32 @@ class AuthorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update existing author.
+     *
+     * @param UpdateAuthorRequest
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateAuthorRequest $request, int $id)
     {
-        //
+        // Validate the input data from the request
+        $inputData = $request->validated();
+
+        try {
+            // Call service to update author with validated data and id
+            $this->service->updateService($inputData, $id);
+
+            // Return a success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully Updated Author.',
+            ], 200);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**

@@ -9,3 +9,5 @@ use Illuminate\Support\Facades\Route;
  */
 Route::post('/', [AuthorController::class, 'store'])
     ->name('api.authors.store');
+Route::put('/{id}', [AuthorController::class, 'update'])
+    ->name('api.authors.update');

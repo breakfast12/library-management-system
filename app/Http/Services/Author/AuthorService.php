@@ -17,4 +17,9 @@ class AuthorService
     {
         return $this->repository->store($request);
     }
+
+    public function updateService(array $attributes, $id)
+    {
+        return $this->repository->update($attributes, $id);
+    }
 }
