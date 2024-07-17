@@ -26,7 +26,7 @@ class AuthorTest extends TestCase
 
         $response = $this->postJson(route('api.authors.store'), $author, $this->token);
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Name is required.', $response->json()['message']['name'][0]);
@@ -47,7 +47,7 @@ class AuthorTest extends TestCase
 
         $response = $this->postJson(route('api.authors.store'), $author, $this->token);
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Bio is required.', $response->json()['message']['bio'][0]);
@@ -68,7 +68,7 @@ class AuthorTest extends TestCase
 
         $response = $this->postJson(route('api.authors.store'), $author, $this->token);
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Birth date is required.', $response->json()['message']['birth_date'][0]);
@@ -89,7 +89,7 @@ class AuthorTest extends TestCase
 
         $response = $this->postJson(route('api.authors.store'), $author, $this->token);
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Birth date must be valid date.', $response->json()['message']['birth_date'][0]);
@@ -131,10 +131,42 @@ class AuthorTest extends TestCase
 
         $response = $this->postJson(route('api.authors.store'), $author, $this->token);
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Name has already been taken.', $response->json()['message']['name'][0]);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function cant_see_detail_author_cause_param_id_does_not_exist()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $response = $this->getJson(route('api.authors.show', ['id' => 99]), $this->token);
+
+        $response->assertBadRequest();
+
+        $this->assertEquals('error', $response->json()['status']);
+        $this->assertEquals('Author ID does not exist.', $response->json()['message']['id'][0]);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_see_detail_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $id = Author::latest()->first()->id;
+
+        $response = $this->getJson(route('api.authors.show', ['id' => $id]), $this->token);
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals('Successfully Show Detail Author.', $response->json()['message']);
 
         $this->logout();
     }
@@ -156,7 +188,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Author ID does not exist.', $response->json()['message']['id'][0]);
@@ -183,7 +215,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Name is required.', $response->json()['message']['name'][0]);
@@ -210,7 +242,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Bio is required.', $response->json()['message']['bio'][0]);
@@ -237,7 +269,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Birth date is required.', $response->json()['message']['birth_date'][0]);
@@ -264,7 +296,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Birth date must be valid date.', $response->json()['message']['birth_date'][0]);
@@ -291,7 +323,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
         $this->assertEquals('Name has already been taken.', $response->json()['message']['name'][0]);
@@ -318,7 +350,7 @@ class AuthorTest extends TestCase
             $this->token
         );
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals('Successfully Updated Author.', $response->json()['message']);

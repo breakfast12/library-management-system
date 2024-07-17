@@ -147,6 +147,86 @@ class AuthorFeature extends Swagger
     }
 
     /**
+     * @OA\Get(
+     *    path="/api/authors/{id}",
+     *    tags={"Author"},
+     *    summary="Detail Author",
+     *    description="See detail author.",
+     *    security={{"passport":{}}},
+     *
+     *    @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Success",
+     *
+     *        @OA\JsonContent(
+     *           example={
+     *              "status": "success",
+     *              "message": "Successfully Show Detail Author.",
+     *              "data": {
+     *                  "id": 1,
+     *                  "name": "Budi",
+     *                  "bio": "Hidup harus dicobain",
+     *                  "birth_date": "1998-10-10",
+     *                  "created_at": "2024-07-17 14:03:43",
+     *                  "updated_at": "2024-07-17 14:45:43"
+     *              }
+     *           }
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=400,
+     *        description="Bad Request",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "id": {
+     *                          "Author ID does not exist."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Author ID does not exist.",
+     *          ),
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
+     *     ),
+     * )
+     */
+    public function show()
+    {
+        //
+    }
+
+    /**
      * @OA\Put(
      *    path="/api/authors/{id}",
      *    tags={"Author"},

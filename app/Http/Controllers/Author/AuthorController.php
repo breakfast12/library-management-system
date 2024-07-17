@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Author\DetailAuthorRequest;
 use App\Http\Requests\Author\StoreAuthorRequest;
 use App\Http\Requests\Author\UpdateAuthorRequest;
 use App\Http\Resources\Author\AuthorResource;
+use App\Http\Resources\Author\DetailAuthorResource;
 use App\Http\Services\Author\AuthorService;
 use Illuminate\Http\Request;
 
@@ -63,11 +65,27 @@ class AuthorController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show the detail author.
+     *
+     * @param DetailAuthorRequest
+     * @param int
+     * @return DetailAuthorResource|\Illuminate\Http\JsonResponse
      */
-    public function show(string $id)
+    public function show(DetailAuthorRequest $request, int $id)
     {
-        //
+        try {
+            // Call the service to find the author by id
+            $response = $this->service->findService($id);
+
+            // Return the author detail resource
+            return new DetailAuthorResource($response);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**

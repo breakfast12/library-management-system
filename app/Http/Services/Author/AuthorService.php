@@ -18,6 +18,11 @@ class AuthorService
         return $this->repository->store($request);
     }
 
+    public function findService($id)
+    {
+        return $this->repository->find($id);
+    }
+
     public function updateService(array $attributes, $id)
     {
         return $this->repository->update($attributes, $id);

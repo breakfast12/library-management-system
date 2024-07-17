@@ -270,6 +270,87 @@
             }
         },
         "/api/authors/{id}": {
+            "get": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Detail Author",
+                "description": "See detail author.",
+                "operationId": "9d27bd36dc2c35f879d1283b319e99dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Show Detail Author.",
+                                    "data": {
+                                        "id": 1,
+                                        "name": "Budi",
+                                        "bio": "Hidup harus dicobain",
+                                        "birth_date": "1998-10-10",
+                                        "created_at": "2024-07-17 14:03:43",
+                                        "updated_at": "2024-07-17 14:45:43"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Author ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Author ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
             "put": {
                 "tags": [
                     "Author"
