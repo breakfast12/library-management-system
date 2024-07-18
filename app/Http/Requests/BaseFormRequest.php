@@ -17,11 +17,27 @@ class BaseFormRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
+        // Create a JSON response with the validation errors
+        // and 400 status code
         $response = response()->json([
             'status' => 'error',
             'message' => $validator->errors(),
         ], 400);
 
+        // Throw an HttpResponseException with the response
         throw new HttpResponseException($response);
+    }
+
+    /**
+     * Get the data for validation.
+     *
+     * @return array
+     */
+    public function validationData()
+    {
+        // Merge all input data with the 'id' from the route parameters
+        return array_merge($this->all(), [
+            'id' => $this->route('id'),
+        ]);
     }
 }

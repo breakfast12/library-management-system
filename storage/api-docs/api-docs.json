@@ -137,12 +137,626 @@
                     }
                 ]
             }
+        },
+        "/api/authors": {
+            "get": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "List authors",
+                "description": "Get list authors and can search, sorting and filter.",
+                "operationId": "60fddbc80290ae6889d0a16869b2a6e9",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term for name or bio",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "birth_date_from",
+                        "in": "query",
+                        "description": "Filter authors born after this date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "birth_date_to",
+                        "in": "query",
+                        "description": "Filter authors born before this date",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Column to order by (name, bio, birth_date, created_at, updated_at)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Order direction",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of results per page",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "name": "Sylvester Robert",
+                                            "bio": "lorem ipsum",
+                                            "birth_date": "2000-02-15",
+                                            "created_at": "2024-07-18 03:22:34",
+                                            "updated_at": "2024-07-18 03:22:34"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "Vanda Dirkje",
+                                            "bio": "lorem ipsum 2",
+                                            "birth_date": "1995-05-20",
+                                            "created_at": "2024-07-18 03:22:34",
+                                            "updated_at": "2024-07-18 03:22:34"
+                                        },
+                                        {
+                                            "id": 3,
+                                            "name": "Cathrine Dino",
+                                            "bio": "lorem ipsum 3",
+                                            "birth_date": "1998-08-11",
+                                            "created_at": "2024-07-18 03:22:34",
+                                            "updated_at": "2024-07-18 03:22:34"
+                                        },
+                                        {
+                                            "id": 4,
+                                            "name": "Murad Hilaire",
+                                            "bio": "lorem ipsum 4",
+                                            "birth_date": "2002-04-15",
+                                            "created_at": "2024-07-18 03:22:34",
+                                            "updated_at": "2024-07-18 03:22:34"
+                                        },
+                                        {
+                                            "id": 5,
+                                            "name": "Emmy Jonna",
+                                            "bio": "lorem koko 5",
+                                            "birth_date": "1993-06-20",
+                                            "created_at": "2024-07-18 06:08:43",
+                                            "updated_at": "2024-07-18 06:08:43"
+                                        }
+                                    ],
+                                    "links": {
+                                        "first": "http://127.0.0.1:8000/api/authors?page=1",
+                                        "last": "http://127.0.0.1:8000/api/authors?page=1",
+                                        "prev": null,
+                                        "next": null
+                                    },
+                                    "meta": {
+                                        "current_page": 1,
+                                        "from": 1,
+                                        "last_page": 1,
+                                        "links": [
+                                            {
+                                                "url": null,
+                                                "label": "&laquo; Previous",
+                                                "active": false
+                                            },
+                                            {
+                                                "url": "http://127.0.0.1:8000/api/authors?page=1",
+                                                "label": "1",
+                                                "active": true
+                                            },
+                                            {
+                                                "url": null,
+                                                "label": "Next &raquo;",
+                                                "active": false
+                                            }
+                                        ],
+                                        "path": "http://127.0.0.1:8000/api/authors",
+                                        "per_page": 10,
+                                        "to": 6,
+                                        "total": 6
+                                    },
+                                    "status": "success",
+                                    "message": "Author data retrieved successfully."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Store Author",
+                "description": "Create a new author and returns the created author data.",
+                "operationId": "75dcb97994d11304b2449582df08bcdb",
+                "requestBody": {
+                    "description": "Author data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "name": "Budi",
+                                "bio": "Hidup harus dicobain",
+                                "birth_date": "1998-10-10"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Store Author.",
+                                    "data": {
+                                        "name": "Budi",
+                                        "bio": "Hidup harus dicobain",
+                                        "birth_date": "1998-10-10",
+                                        "created_at": "2024-07-17 09:05:33",
+                                        "updated_at": "2024-07-17 09:05:33"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Name is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "name": [
+                                                    "Name is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-2": {
+                                        "summary": "Bio is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "bio": [
+                                                    "Bio is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-3": {
+                                        "summary": "Birth date is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "birth_date": [
+                                                    "Birth date is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-4": {
+                                        "summary": "Name has already been taken.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "name": [
+                                                    "Name has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-5": {
+                                        "summary": "Birth date must be valid date.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "birth_date": [
+                                                    "Birth date must be valid date."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/authors/{id}": {
+            "get": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Detail Author",
+                "description": "See detail author.",
+                "operationId": "9d27bd36dc2c35f879d1283b319e99dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Show Detail Author.",
+                                    "data": {
+                                        "id": 1,
+                                        "name": "Budi",
+                                        "bio": "Hidup harus dicobain",
+                                        "birth_date": "1998-10-10",
+                                        "created_at": "2024-07-17 14:03:43",
+                                        "updated_at": "2024-07-17 14:45:43"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Author ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Author ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Update Author",
+                "description": "Update author and returns success response.",
+                "operationId": "7d22ef3152a61b8742aa01666b42fea7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Author data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "name": "Budi",
+                                "bio": "Hidup harus dicobain",
+                                "birth_date": "1998-10-10"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Updated Author."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Author ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Author ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-2": {
+                                        "summary": "Name is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "name": [
+                                                    "Name is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-3": {
+                                        "summary": "Bio is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "bio": [
+                                                    "Bio is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-4": {
+                                        "summary": "Birth date is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "birth_date": [
+                                                    "Birth date is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-5": {
+                                        "summary": "Birth date must be valid date.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "birth_date": [
+                                                    "Birth date must be valid date."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-6": {
+                                        "summary": "Name has already been taken.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "name": [
+                                                    "Name has already been taken."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Delete Author",
+                "description": "Delete author data.",
+                "operationId": "015282df36c646fd9167f635853681d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Deleted Author."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Author ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Author ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
         }
     },
     "tags": [
         {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "Author",
+            "description": "Author"
         }
     ],
     "components": {

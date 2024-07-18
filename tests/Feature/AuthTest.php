@@ -38,10 +38,13 @@ class AuthTest extends TestCase
             $this->credential('', 'password')
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
-        $this->assertEquals('Email address is required.', $response->json()['message']['email'][0]);
+        $this->assertEquals(
+            'Email address is required.',
+            $response->json()['message']['email'][0]
+        );
     }
 
     #[Test]
@@ -52,10 +55,13 @@ class AuthTest extends TestCase
             $this->credential('admin', 'password')
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
-        $this->assertEquals('Please provide a valid email address.', $response->json()['message']['email'][0]);
+        $this->assertEquals(
+            'Please provide a valid email address.',
+            $response->json()['message']['email'][0]
+        );
     }
 
     #[Test]
@@ -66,10 +72,13 @@ class AuthTest extends TestCase
             $this->credential('admin@mailinator.com', '')
         );
 
-        $response->assertStatus(400);
+        $response->assertBadRequest();
 
         $this->assertEquals('error', $response->json()['status']);
-        $this->assertEquals('Please enter your password.', $response->json()['message']['password'][0]);
+        $this->assertEquals(
+            'Please enter your password.',
+            $response->json()['message']['password'][0]
+        );
     }
 
     #[Test]
@@ -80,10 +89,13 @@ class AuthTest extends TestCase
             $this->credential('admin@mailinator.com', 'password')
         );
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $this->assertEquals('success', $response->json()['status']);
-        $this->assertEquals('Successfully Logged In.', $response->json()['message']);
+        $this->assertEquals(
+            'Successfully Logged In.',
+            $response->json()['message']
+        );
 
         return $response->json()['data']['access_token'];
     }
@@ -96,9 +108,12 @@ class AuthTest extends TestCase
             'Authorization' => 'Bearer '.$token,
         ])->postJson(route('api.auth.logout'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $this->assertEquals('success', $response->json()['status']);
-        $this->assertEquals('Successfully logged out.', $response->json()['message']);
+        $this->assertEquals(
+            'Successfully logged out.',
+            $response->json()['message']
+        );
     }
 }
