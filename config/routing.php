@@ -16,5 +16,12 @@ return [
             'middleware' => ['api', 'auth:api'],
             'prefix' => 'api/authors',
         ],
+
+        // Book API Routes
+        [
+            'path' => base_path('routes/book/routes.php'),
+            'middleware' => ['api', 'auth:api'],
+            'prefix' => 'api/books',
+        ],
     ],
 ];

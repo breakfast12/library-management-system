@@ -342,8 +342,8 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Success",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {},
@@ -747,6 +747,161 @@
                     }
                 ]
             }
+        },
+        "/api/books": {
+            "post": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Store Book",
+                "description": "Create a new book and returns the created book data.",
+                "operationId": "05aaabee393f12fe9bb80f2396d6ce0c",
+                "requestBody": {
+                    "description": "Book data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "title": "Laut Bercerita",
+                                "description": "Laut Bercerita adalah novel yang diterbitkan oleh Kepustakaan Populer Gramedia (KPG) Jakarta pada tahun 2017",
+                                "publish_date": "2017-10-23",
+                                "author_id": 1
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Store Book.",
+                                    "data": {
+                                        "title": "Laut Bercerita",
+                                        "description": "Laut Bercerita adalah novel yang diterbitkan oleh Kepustakaan Populer Gramedia (KPG) Jakarta pada tahun 2017",
+                                        "publish_date": "2017-10-23",
+                                        "author_name": "Sylvester Robert",
+                                        "created_at": "2024-07-18 16:08:28",
+                                        "updated_at": "2024-07-18 16:08:28"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Title is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "title": [
+                                                    "Title is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-2": {
+                                        "summary": "Description is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "description": [
+                                                    "Description is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-3": {
+                                        "summary": "Publish Date is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "publish_date": [
+                                                    "Publish Date is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-4": {
+                                        "summary": "Publish Date must be valid date.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "publish_date": [
+                                                    "Publish Date must be valid date."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-5": {
+                                        "summary": "Author is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "author_id": [
+                                                    "Author is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-6": {
+                                        "summary": "Author ID must be valid integer.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "author_id": [
+                                                    "Author ID must be valid integer."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-7": {
+                                        "summary": "Author does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "author_id": [
+                                                    "Author does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
         }
     },
     "tags": [
@@ -757,6 +912,10 @@
         {
             "name": "Author",
             "description": "Author"
+        },
+        {
+            "name": "Book",
+            "description": "Book"
         }
     ],
     "components": {

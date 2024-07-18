@@ -226,8 +226,8 @@ class AuthorFeature extends Swagger
      *    ),
      *
      *    @OA\Response(
-     *        response=200,
-     *        description="Success",
+     *        response=201,
+     *        description="Created",
      *
      *        @OA\JsonContent(
      *           example={
