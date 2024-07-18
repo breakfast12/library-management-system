@@ -26,7 +26,7 @@ class UpdateAuthorRequest extends BaseFormRequest
             'id' => 'exists:authors,id',
             'name' => [
                 'required',
-                new AuthorUnique,
+                new AuthorUnique($this->route('id')),
             ],
             'bio' => 'required',
             'birth_date' => 'required|date',

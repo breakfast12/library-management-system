@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Author\Author;
+use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Tests\Traits\AuthCase;
@@ -12,6 +13,522 @@ class AuthorTest extends TestCase
     use AuthCase;
 
     private $token;
+
+    #[Test]
+    public function can_see_list_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $response = $this->getJson(
+            route('api.authors.index'),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_search_by_name_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'search' => 'jon',
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+        $this->assertEquals('Emmy Jonna', $response->json()['data'][0]['name']);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_search_by_bio_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'search' => 'xi',
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+        $this->assertEquals('lorem xixi 3', $response->json()['data'][0]['bio']);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_name_asc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'name',
+            'order' => 'asc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_name_desc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'name',
+            'order' => 'desc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_bio_asc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'bio',
+            'order' => 'asc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_bio_desc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'bio',
+            'order' => 'desc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_birth_date_asc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'birth_date',
+            'order' => 'asc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_birth_date_desc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'birth_date',
+            'order' => 'desc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_created_at_asc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'created_at',
+            'order' => 'asc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_created_at_desc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'created_at',
+            'order' => 'desc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_updated_at_asc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'updated_at',
+            'order' => 'asc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_order_by_updated_at_desc_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'order_by' => 'updated_at',
+            'order' => 'desc',
+            'per_page' => 10,
+            'page' => 1,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $orderedAuthors = Author::orderBy($params['order_by'], $params['order'])
+            ->get()
+            ->pluck($params['order_by'])
+            ->toArray();
+        $responseAuthors = collect($response->json()['data'])
+            ->pluck($params['order_by'])
+            ->toArray();
+
+        $expectedAuthors = array_slice($orderedAuthors, 0, $params['per_page']);
+
+        $this->assertEquals($expectedAuthors, $responseAuthors);
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_filter_by_birth_date_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'birth_date_from' => '1993-06-01',
+            'birth_date_to' => '1995-05-31',
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.index', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Author data retrieved successfully.',
+            $response->json()['message']
+        );
+
+        $expectedAuthors = Author::whereBetween('birth_date', [$params['birth_date_from'], $params['birth_date_to']])
+            ->get();
+
+        $responseAuthors = collect($response->json()['data']);
+        $expectedAuthors = $expectedAuthors->map(function ($author) {
+            return [
+                'id' => $author->id,
+                'name' => $author->name,
+                'bio' => $author->bio,
+                'birth_date' => Carbon::parse($author->birth_date)->format('Y-m-d'),
+                'created_at' => Carbon::parse($author->created_at)->toDateTimeString(),
+                'updated_at' => Carbon::parse($author->updated_at)->toDateTimeString(),
+            ];
+        });
+
+        $this->assertEquals($expectedAuthors->toArray(), $responseAuthors->toArray());
+
+        $this->logout();
+    }
 
     #[Test]
     public function cant_insert_author_cause_name_required()
@@ -381,7 +898,7 @@ class AuthorTest extends TestCase
         $id = Author::latest()->first()->id;
 
         $author = [
-            'name' => 'Klara Anaya',
+            'name' => 'Cathrine Dino',
             'bio' => 'lorem ipsum 4',
             'birth_date' => '1998-10-10',
         ];

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
  * Author - Author API Routes
  * prefix: api/authors
  */
+Route::get('/', [AuthorController::class, 'index'])
+    ->name('api.authors.index');
 Route::post('/', [AuthorController::class, 'store'])
     ->name('api.authors.store');
 Route::get('/{id}', [AuthorController::class, 'show'])

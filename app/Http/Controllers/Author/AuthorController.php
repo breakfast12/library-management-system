@@ -8,6 +8,7 @@ use App\Http\Requests\Author\StoreAuthorRequest;
 use App\Http\Requests\Author\UpdateAuthorRequest;
 use App\Http\Resources\Author\AuthorResource;
 use App\Http\Resources\Author\DetailAuthorResource;
+use App\Http\Resources\Author\ListAuthorResource;
 use App\Http\Services\Author\AuthorService;
 use Illuminate\Http\Request;
 
@@ -31,11 +32,28 @@ class AuthorController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * List of authors.
+     *
+     * @return ListAuthorResource|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        try {
+            // Call the service to get the list of authors.
+            $response = $this->service->indexService();
+
+            // Return authors with status and message.
+            return ListAuthorResource::collection($response)->additional([
+                'status' => 'success',
+                'message' => 'Author data retrieved successfully.',
+            ]);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**
