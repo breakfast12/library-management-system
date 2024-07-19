@@ -168,7 +168,7 @@ class AuthorFeature extends Swagger
      *                  "total": 6
      *              },
      *              "status": "success",
-     *              "message": "Author data retrieved successfully."
+     *              "message": "Authors data retrieved successfully."
      *           }
      *        ),
      *     ),

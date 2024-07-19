@@ -28,7 +28,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -53,7 +53,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
         $this->assertEquals('Emmy Jonna', $response->json()['data'][0]['name']);
@@ -79,7 +79,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
         $this->assertEquals('lorem xixi 3', $response->json()['data'][0]['bio']);
@@ -108,7 +108,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -148,7 +148,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -188,7 +188,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -228,7 +228,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -268,7 +268,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -308,7 +308,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -348,7 +348,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -388,7 +388,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -428,7 +428,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -468,7 +468,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
@@ -506,11 +506,12 @@ class AuthorTest extends TestCase
 
         $this->assertEquals('success', $response->json()['status']);
         $this->assertEquals(
-            'Author data retrieved successfully.',
+            'Authors data retrieved successfully.',
             $response->json()['message']
         );
 
         $expectedAuthors = Author::whereBetween('birth_date', [$params['birth_date_from'], $params['birth_date_to']])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $responseAuthors = collect($response->json()['data']);

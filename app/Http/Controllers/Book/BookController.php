@@ -8,6 +8,7 @@ use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Http\Resources\Book\BookResource;
 use App\Http\Resources\Book\DetailBookResource;
+use App\Http\Resources\Book\ListBookResource;
 use App\Http\Services\Book\BookService;
 use Illuminate\Http\Request;
 
@@ -30,9 +31,29 @@ class BookController extends Controller
         $this->service = $bookService;
     }
 
+    /**
+     * List of books.
+     *
+     * @return ListBookResource|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        //
+        try {
+            // Call the service to get the list of books.
+            $response = $this->service->indexService();
+
+            // Return books with status and message.
+            return ListBookResource::collection($response)->additional([
+                'status' => 'success',
+                'message' => 'Books data retrieved successfully.',
+            ]);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**

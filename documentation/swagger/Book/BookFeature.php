@@ -7,6 +7,280 @@ use Documentation\Swagger\Swagger;
 class BookFeature extends Swagger
 {
     /**
+     * @OA\Get(
+     *    path="/api/books",
+     *    tags={"Book"},
+     *    summary="List books",
+     *    description="Get list books and can search, sorting and filter.",
+     *    security={{"passport":{}}},
+     *
+     *    @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *
+     *         @OA\Schema(
+     *             type="string",
+     *         ),
+     *         description="Search term for title, description and author name"
+     *    ),
+     *
+     *    @OA\Parameter(
+     *        name="publish_date_from",
+     *        in="query",
+     *
+     *        @OA\Schema(
+     *            type="string",
+     *            format="date"
+     *        ),
+     *        description="Filter book publish after this date"
+     *    ),
+     *
+     *    @OA\Parameter(
+     *        name="publish_date_to",
+     *        in="query",
+     *
+     *        @OA\Schema(
+     *            type="string",
+     *            format="date"
+     *        ),
+     *        description="Filter book publish before this date"
+     *    ),
+     *
+     *    @OA\Parameter(
+     *        name="order_by",
+     *        in="query",
+     *
+     *        @OA\Schema(
+     *            type="string"
+     *        ),
+     *        description="Column to order by (title, description, publish_date, author_name, created_at, updated_at)"
+     *    ),
+     *
+     *    @OA\Parameter(
+     *        name="order",
+     *        in="query",
+     *
+     *        @OA\Schema(
+     *            type="string",
+     *            enum={"asc", "desc"}
+     *        ),
+     *        description="Order direction"
+     *    ),
+     *
+     *    @OA\Parameter(
+     *        name="per_page",
+     *        in="query",
+     *
+     *        @OA\Schema(
+     *            type="integer"
+     *        ),
+     *        description="Number of results per page"
+     *    ),
+     *
+     *    @OA\Parameter(
+     *        name="page",
+     *        in="query",
+     *
+     *        @OA\Schema(
+     *            type="integer"
+     *        ),
+     *        description="Page number for pagination"
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Success",
+     *
+     *        @OA\JsonContent(
+     *           example={
+     *              "data": {
+     *                  {
+     *                      "id": 1,
+     *                      "title": "Melangkah",
+     *                      "description": "Melangkah bertemakan tentang petualangan di Indonesia",
+     *                      "publish_date": "2020-03-22",
+     *                      "author": {
+     *                          "id": 1,
+     *                          "name": "Sylvester Robert"
+     *                      },
+     *                      "created_at": "2024-07-19 11:24:20",
+     *                      "updated_at": "2024-07-19 11:24:20"
+     *                  },
+     *                  {
+     *                      "id": 2,
+     *                      "title": "Wingit",
+     *                      "description": "Wingit menceritakan kisah-kisah mistis atau horor",
+     *                      "publish_date": "2020-12-15",
+     *                      "author": {
+     *                          "id": 2,
+     *                          "name": "Vanda Dirkje"
+     *                      },
+     *                      "created_at": "2024-07-19 11:19:20",
+     *                      "updated_at": "2024-07-19 11:19:20"
+     *                  },
+     *                  {
+     *                      "id": 3,
+     *                      "title": "Almond",
+     *                      "description": "Almond adalah novel yang memberi harapan kepada orang seperti saya yang percaya bahwa hati dapat mengendalikan kepala.",
+     *                      "publish_date": "2019-03-31",
+     *                      "author": {
+     *                          "id": 3,
+     *                          "name": "Cathrine Dino"
+     *                      },
+     *                      "created_at": "2024-07-19 11:14:20",
+     *                      "updated_at": "2024-07-19 11:14:20"
+     *                  },
+     *                  {
+     *                      "id": 4,
+     *                      "title": "Di Hadapan Rahasia",
+     *                      "description": "Kumpulan puisi yang meromantisasi rindu, sebuah peratapan dalam penantian, sampai memelihara harapan yang sepi dalam satu jiwa",
+     *                      "publish_date": "2020-01-19",
+     *                      "author": {
+     *                           "id": 4,
+     *                           "name": "Murad Hilaire"
+     *                      },
+     *                      "created_at": "2024-07-19 11:09:20",
+     *                      "updated_at": "2024-07-19 11:09:20"
+     *                  },
+     *                  {
+     *                      "id": 5,
+     *                      "title": "Melihat Pengarang Tidak Bekerja",
+     *                      "description": "Serupa perbuatan baik lain, menulis itu selalu sulit ditunaikan. Dihadapkan ragam rintangan yang coba menghadang",
+     *                      "publish_date": "2022-05-22",
+     *                      "author": {
+     *                          "id": 5,
+     *                           "name": "Emmy Jonna"
+     *                      },
+     *                      "created_at": "2024-07-19 11:04:20",
+     *                      "updated_at": "2024-07-19 11:04:20"
+     *                  },
+     *                  {
+     *                      "id": 6,
+     *                      "title": "Perburuan Piring Emas",
+     *                      "description": "Di tengah sebuah pesta topeng yang digelar oleh Stuyvesant Randolph, seorang jutawan pemilik Seven Oaks, terjadi sebuah pencurian yang sangat berani",
+     *                      "publish_date": "2022-03-21",
+     *                      "author": {
+     *                          "id": 6,
+     *                          "name": "Surya Admetos"
+     *                      },
+     *                      "created_at": "2024-07-19 10:59:20",
+     *                      "updated_at": "2024-07-19 10:59:20"
+     *                  },
+     *                  {
+     *                      "id": 7,
+     *                      "title": "Arah Musim",
+     *                      "description": "Seperti musim yang selalu berganti,isi dari buku ini juga mengingatkan manusia dengan segala perannya.",
+     *                      "publish_date": "2019-10-13",
+     *                      "author": {
+     *                          "id": 7,
+     *                          "name": "Eino Kondwani"
+     *                      },
+     *                      "created_at": "2024-07-19 10:54:20",
+     *                      "updated_at": "2024-07-19 10:54:20"
+     *                  },
+     *                  {
+     *                      "id": 8,
+     *                      "title": "Today I Miss You",
+     *                      "description": "Dari yang tak biasa untuk bertegur sapa, menjadi biasa. Sampai akhirnya ada rasa gugup yang hinggap di dalam dada saat berjumpa.",
+     *                      "publish_date": "2019-12-22",
+     *                      "author": {
+     *                          "id": 8,
+     *                          "name": "Siana Dana"
+     *                      },
+     *                      "created_at": "2024-07-19 10:49:20",
+     *                      "updated_at": "2024-07-19 10:49:20"
+     *                  },
+     *                  {
+     *                      "id": 9,
+     *                      "title": "Tanah Putih",
+     *                      "description": "Kau telah membuatku kembali percaya bahwa cinta adalah sebuah kemerdekaan.",
+     *                      "publish_date": "2019-08-31",
+     *                      "author": {
+     *                          "id": 1,
+     *                          "name": "Sylvester Robert"
+     *                      },
+     *                      "created_at": "2024-07-19 10:44:20",
+     *                      "updated_at": "2024-07-19 10:44:20"
+     *                  },
+     *                  {
+     *                      "id": 10,
+     *                      "title": "Pertanda",
+     *                      "description": "Pertanda adalah kumpulan kisah nyata tentang tanda datangnya kematian seseorang.",
+     *                      "publish_date": "2019-09-02",
+     *                      "author": {
+     *                          "id": 2,
+     *                          "name": "Vanda Dirkje"
+     *                      },
+     *                      "created_at": "2024-07-19 10:39:20",
+     *                      "updated_at": "2024-07-19 10:39:20"
+     *                  }
+     *              },
+     *              "links": {
+     *                  "first": "http://127.0.0.1:8000/api/books?page=1",
+     *                  "last": "http://127.0.0.1:8000/api/books?page=2",
+     *                  "prev": null,
+     *                  "next": "http://127.0.0.1:8000/api/books?page=2"
+     *              },
+     *              "meta": {
+     *                  "current_page": 1,
+     *                  "from": 1,
+     *                  "last_page": 2,
+     *                  "links": {
+     *                      {
+     *                          "url": null,
+     *                          "label": "&laquo; Previous",
+     *                          "active": false
+     *                      },
+     *                      {
+     *                          "url": "http://127.0.0.1:8000/api/books?page=1",
+     *                          "label": "1",
+     *                          "active": true
+     *                      },
+     *                      {
+     *                          "url": "http://127.0.0.1:8000/api/books?page=2",
+     *                          "label": "2",
+     *                          "active": false
+     *                      },
+     *                      {
+     *                          "url": "http://127.0.0.1:8000/api/books?page=2",
+     *                          "label": "Next &raquo;",
+     *                          "active": false
+     *                      }
+     *                  },
+     *                  "path": "http://127.0.0.1:8000/api/books",
+     *                  "per_page": 10,
+     *                  "to": 10,
+     *                  "total": 12
+     *              },
+     *              "status": "success",
+     *              "message": "Books data retrieved successfully."
+     *           }
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
+     *     ),
+     * )
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
      * @OA\Post(
      *    path="/api/books",
      *    tags={"Book"},

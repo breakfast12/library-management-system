@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
  * Book - Book API Routes
  * prefix: api/books
  */
+Route::get('/', [BookController::class, 'index'])
+    ->name('api.books.index');
 Route::post('/', [BookController::class, 'store'])
     ->name('api.books.store');
 Route::get('/{id}', [BookController::class, 'show'])

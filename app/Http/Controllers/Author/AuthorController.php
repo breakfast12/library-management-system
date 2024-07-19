@@ -45,7 +45,7 @@ class AuthorController extends Controller
             // Return authors with status and message.
             return ListAuthorResource::collection($response)->additional([
                 'status' => 'success',
-                'message' => 'Author data retrieved successfully.',
+                'message' => 'Authors data retrieved successfully.',
             ]);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong

@@ -24,6 +24,32 @@ class BookService
     }
 
     /**
+     * Get list of books based on filters and pagination.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function indexService()
+    {
+        // Get search and filter parameters from the request.
+        $search = request('search');
+        $publishDateFrom = request('publish_date_from');
+        $publishDateTo = request('publish_date_to');
+        $orderBy = request('order_by', 'created_at');
+        $order = request('order', 'desc');
+        $perPage = request('per_page', 10);
+
+        // Retrieve books from the repository with filters.
+        return $this->repository->getBooks(
+            $search,
+            $publishDateFrom,
+            $publishDateTo,
+            $orderBy,
+            $order,
+            $perPage,
+        );
+    }
+
+    /**
      * Store a new book.
      *
      * @param array
