@@ -88,4 +88,27 @@ class AuthorRepository extends BaseRepository implements AuthorContract
         // Return ordered, paginated results.
         return $query->orderBy($orderBy, $order)->paginate($perPage);
     }
+
+    /**
+     * Retrieve author with their books by the author id.
+     *
+     * @param int
+     * @param int
+     * @param string
+     * @return object
+     */
+    public function findWithBook($id, $perPage, $sortOrder)
+    {
+        // Find the author by id
+        $author = $this->author->find($id);
+
+        // Retrieve and paginate the author books, sorted by publish date
+        $books = $author->books()->orderBy('publish_date', $sortOrder)->paginate($perPage);
+
+        // Return object with the author and their books
+        return (object) [
+            'author' => $author,
+            'books' => $books,
+        ];
+    }
 }

@@ -97,4 +97,23 @@ class AuthorService
         // Use the repository to delete the author.
         return $this->repository->delete($id);
     }
+
+    /**
+     * Get list of books based on author, filters, and pagination.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getCatalogue($id)
+    {
+        // Get search and filter parameters from the request.
+        $sort = request('sort', 'desc');
+        $perPage = request('per_page', 10);
+
+        // Retrieve author catalogue from the repository with filters.
+        return $this->repository->findWithBook(
+            $id,
+            $perPage,
+            $sort,
+        );
+    }
 }

@@ -14,4 +14,6 @@ interface AuthorContract
         $order,
         $perPage
     );
+
+    public function findWithBook($id, $perPage, $sortOrder);
 }

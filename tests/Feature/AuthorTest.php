@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Author\Author;
+use App\Models\Book\Book;
 use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -739,6 +740,103 @@ class AuthorTest extends TestCase
             'Successfully Show Detail Author.',
             $response->json()['message']
         );
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function cant_see_catalogue_author_cause_param_id_does_not_exist()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $params = [
+            'id' => 99,
+            'per_page' => 5,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.catalogue', $params),
+            $this->token
+        );
+
+        $response->assertBadRequest();
+
+        $this->assertEquals('error', $response->json()['status']);
+        $this->assertEquals(
+            'Author ID does not exist.',
+            $response->json()['message']['id'][0]
+        );
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_see_catalogue_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $id = Author::where('name', 'Jenna Zaiden')->first()->id;
+
+        $params = [
+            'id' => $id,
+            'per_page' => 5,
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.catalogue', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Successfully Show Author Catalogue.',
+            $response->json()['message']
+        );
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_sort_catalogue_author()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $id = Author::where('name', 'Jenna Zaiden')->first()->id;
+
+        $params = [
+            'id' => $id,
+            'per_page' => 5,
+            'sort' => 'asc',
+        ];
+
+        $response = $this->getJson(
+            route('api.authors.catalogue', $params),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Successfully Show Author Catalogue.',
+            $response->json()['message']
+        );
+
+        $orderedBooks = Book::where('author_id', $id)
+            ->orderBy('publish_date', $params['sort'])
+            ->get()
+            ->pluck('publish_date')
+            ->toArray();
+
+        $responseBooks = collect($response->json()['data']['books']['data'])
+            ->pluck('publish_date')
+            ->toArray();
+
+        $expectedBooks = array_slice($orderedBooks, 0, $params['per_page']);
+
+        $this->assertEquals($expectedBooks, $responseBooks);
 
         $this->logout();
     }

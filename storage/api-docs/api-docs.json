@@ -196,7 +196,7 @@
                     {
                         "name": "per_page",
                         "in": "query",
-                        "description": "Number of results per page",
+                        "description": "Number of results per page (default: 10)",
                         "schema": {
                             "type": "integer"
                         }
@@ -748,6 +748,117 @@
                 ]
             }
         },
+        "/api/authors/{id}/books": {
+            "get": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Catalogue Author",
+                "description": "See author catalogue.",
+                "operationId": "155db7cb10f06d63d3f66e966c10fce4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sorting direction (Newest and Oldest) by publish_date (default : Newest)",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of results per page (default: 10)",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Show Detail Author.",
+                                    "data": {
+                                        "id": 1,
+                                        "name": "Budi",
+                                        "bio": "Hidup harus dicobain",
+                                        "birth_date": "1998-10-10",
+                                        "created_at": "2024-07-17 14:03:43",
+                                        "updated_at": "2024-07-17 14:45:43"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Author ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Author ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/books": {
             "get": {
                 "tags": [
@@ -806,7 +917,7 @@
                     {
                         "name": "per_page",
                         "in": "query",
-                        "description": "Number of results per page",
+                        "description": "Number of results per page (default: 10)",
                         "schema": {
                             "type": "integer"
                         }
