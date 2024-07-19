@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Author\ParamAuthorRequest;
 use App\Http\Requests\Author\StoreAuthorRequest;
 use App\Http\Requests\Author\UpdateAuthorRequest;
+use App\Http\Resources\Author\AuthorCatalogueResource;
 use App\Http\Resources\Author\AuthorResource;
 use App\Http\Resources\Author\DetailAuthorResource;
 use App\Http\Resources\Author\ListAuthorResource;
@@ -153,6 +154,30 @@ class AuthorController extends Controller
                 'status' => 'success',
                 'message' => 'Successfully Deleted Author.',
             ], 200);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
+    }
+
+    /**
+     * Show the author catalogue.
+     *
+     * @param ParamAuthorRequest
+     * @param int
+     * @return AuthorCatalogueResource|\Illuminate\Http\JsonResponse
+     */
+    public function catalogue(ParamAuthorRequest $request, int $id)
+    {
+        try {
+            // Call the service to author catalogue
+            $response = $this->service->getCatalogue($id);
+
+            // Return the author catalogue resource
+            return new AuthorCatalogueResource($response);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong
             return response()->json([

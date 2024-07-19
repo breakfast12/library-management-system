@@ -74,7 +74,7 @@ class BookFeature extends Swagger
      *        @OA\Schema(
      *            type="integer"
      *        ),
-     *        description="Number of results per page"
+     *        description="Number of results per page (default: 10)"
      *    ),
      *
      *    @OA\Parameter(
