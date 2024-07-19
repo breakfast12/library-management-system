@@ -249,6 +249,50 @@ class BookTest extends TestCase
     }
 
     #[Test]
+    public function cant_see_detail_book_cause_param_id_does_not_exist()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $response = $this->getJson(
+            route('api.books.show', ['id' => 99]),
+            $this->token
+        );
+
+        $response->assertBadRequest();
+
+        $this->assertEquals('error', $response->json()['status']);
+        $this->assertEquals(
+            'Book ID does not exist.',
+            $response->json()['message']['id'][0]
+        );
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_see_detail_book()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $id = Book::latest()->first()->id;
+
+        $response = $this->getJson(
+            route('api.books.show', ['id' => $id]),
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Successfully Show Detail Book.',
+            $response->json()['message']
+        );
+
+        $this->logout();
+    }
+
+    #[Test]
     public function cant_update_book_cause_param_id_does_not_exist()
     {
         $this->token = $this->login('admin@mailinator.com', 'password');

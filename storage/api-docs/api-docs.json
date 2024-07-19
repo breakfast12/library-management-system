@@ -904,6 +904,91 @@
             }
         },
         "/api/books/{id}": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Detail Book With Author",
+                "description": "See detail book with author.",
+                "operationId": "600802ec9234f3b66d28433a7978f53e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Show Detail Book.",
+                                    "data": {
+                                        "id": 1,
+                                        "title": "Wingit",
+                                        "description": "Wingit menceritakan kisah-kisah mistis atau horor",
+                                        "publish_date": "2020-12-15",
+                                        "author": {
+                                            "id": 2,
+                                            "name": "Vanda Dirkje"
+                                        },
+                                        "created_at": "2024-07-19 06:18:08",
+                                        "updated_at": "2024-07-19 06:18:08"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Book ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Book ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
             "put": {
                 "tags": [
                     "Book"

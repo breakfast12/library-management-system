@@ -7,6 +7,7 @@ use App\Http\Requests\Book\ParamBookRequest;
 use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Http\Resources\Book\BookResource;
+use App\Http\Resources\Book\DetailBookResource;
 use App\Http\Services\Book\BookService;
 use Illuminate\Http\Request;
 
@@ -60,9 +61,28 @@ class BookController extends Controller
         }
     }
 
-    public function show(int $id)
+    /**
+     * Show the detail book with author.
+     *
+     * @param ParamBookRequest
+     * @param int
+     * @return DetailBookResource|\Illuminate\Http\JsonResponse
+     */
+    public function show(ParamBookRequest $request, int $id)
     {
-        //
+        try {
+            // Call the service to find the book by id
+            $response = $this->service->findService($id);
+
+            // Return the book detail resource
+            return new DetailBookResource($response);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**

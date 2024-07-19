@@ -36,6 +36,18 @@ class BookService
     }
 
     /**
+     * Find book with author by book id.
+     *
+     * @param int
+     * @return mixed
+     */
+    public function findService($id)
+    {
+        // Use the repository to find the book.
+        return $this->repository->findWithAuthor($id);
+    }
+
+    /**
      * Update existing book.
      *
      * @param array

@@ -174,6 +174,90 @@ class BookFeature extends Swagger
     }
 
     /**
+     * @OA\Get(
+     *    path="/api/books/{id}",
+     *    tags={"Book"},
+     *    summary="Detail Book With Author",
+     *    description="See detail book with author.",
+     *    security={{"passport":{}}},
+     *
+     *    @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Success",
+     *
+     *        @OA\JsonContent(
+     *           example={
+     *              "status": "success",
+     *              "message": "Successfully Show Detail Book.",
+     *              "data": {
+     *                  "id": 1,
+     *                  "title": "Wingit",
+     *                  "description": "Wingit menceritakan kisah-kisah mistis atau horor",
+     *                  "publish_date": "2020-12-15",
+     *                  "author": {
+     *                      "id": 2,
+     *                      "name": "Vanda Dirkje"
+     *                  },
+     *                  "created_at": "2024-07-19 06:18:08",
+     *                  "updated_at": "2024-07-19 06:18:08"
+     *              }
+     *           }
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=400,
+     *        description="Bad Request",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "id": {
+     *                          "Book ID does not exist."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Book ID does not exist.",
+     *          ),
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
+     *     ),
+     * )
+     */
+    public function show()
+    {
+        //
+    }
+
+    /**
      * @OA\Put(
      *    path="/api/books/{id}",
      *    tags={"Book"},

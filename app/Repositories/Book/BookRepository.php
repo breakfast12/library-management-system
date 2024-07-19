@@ -25,4 +25,16 @@ class BookRepository extends BaseRepository implements BookContract
         parent::__construct($book);
         $this->book = $book;
     }
+
+    /**
+     * Retrieve a book with its author details by the book id.
+     *
+     * @param int
+     * @return mixed
+     */
+    public function findWithAuthor($id)
+    {
+        // Retrieve the book by id with author data
+        return $this->book->with('author')->find($id);
+    }
 }

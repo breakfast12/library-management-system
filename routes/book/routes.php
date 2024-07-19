@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
  */
 Route::post('/', [BookController::class, 'store'])
     ->name('api.books.store');
+Route::get('/{id}', [BookController::class, 'show'])
+    ->name('api.books.show');
 Route::put('/{id}', [BookController::class, 'update'])
     ->name('api.books.update');
 Route::delete('/{id}', [BookController::class, 'destroy'])
