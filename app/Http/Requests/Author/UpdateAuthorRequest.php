@@ -41,11 +41,11 @@ class UpdateAuthorRequest extends BaseFormRequest
     public function messages()
     {
         return [
+            'id.exists' => 'Author ID does not exist.',
             'name.required' => 'Name is required.',
             'bio.required' => 'Bio is required.',
             'birth_date.required' => 'Birth date is required.',
             'birth_date.date' => 'Birth date must be valid date.',
-            'id.exists' => 'Author ID does not exist.',
         ];
     }
 }

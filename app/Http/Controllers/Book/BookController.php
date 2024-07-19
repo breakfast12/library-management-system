@@ -1,51 +1,51 @@
 <?php
 
-namespace App\Http\Controllers\Author;
+namespace App\Http\Controllers\Book;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Author\ParamAuthorRequest;
-use App\Http\Requests\Author\StoreAuthorRequest;
-use App\Http\Requests\Author\UpdateAuthorRequest;
-use App\Http\Resources\Author\AuthorResource;
-use App\Http\Resources\Author\DetailAuthorResource;
-use App\Http\Resources\Author\ListAuthorResource;
-use App\Http\Services\Author\AuthorService;
+use App\Http\Requests\Book\ParamBookRequest;
+use App\Http\Requests\Book\StoreBookRequest;
+use App\Http\Requests\Book\UpdateBookRequest;
+use App\Http\Resources\Book\BookResource;
+use App\Http\Resources\Book\DetailBookResource;
+use App\Http\Resources\Book\ListBookResource;
+use App\Http\Services\Book\BookService;
 use Illuminate\Http\Request;
 
-class AuthorController extends Controller
+class BookController extends Controller
 {
     /**
-     * The service instance to handle author operations.
+     * The service instance to handle book operations.
      *
-     * @var AuthorService
+     * @var BookService
      */
     protected $service;
 
     /**
      * Constructor to initialize the service.
      *
-     * @param AuthorService
+     * @param BookService
      */
-    public function __construct(AuthorService $authorService)
+    public function __construct(BookService $bookService)
     {
-        $this->service = $authorService;
+        $this->service = $bookService;
     }
 
     /**
-     * List of authors.
+     * List of books.
      *
-     * @return ListAuthorResource|\Illuminate\Http\JsonResponse
+     * @return ListBookResource|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
         try {
-            // Call the service to get the list of authors.
+            // Call the service to get the list of books.
             $response = $this->service->indexService();
 
-            // Return authors with status and message.
-            return ListAuthorResource::collection($response)->additional([
+            // Return books with status and message.
+            return ListBookResource::collection($response)->additional([
                 'status' => 'success',
-                'message' => 'Authors data retrieved successfully.',
+                'message' => 'Books data retrieved successfully.',
             ]);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong
@@ -57,22 +57,22 @@ class AuthorController extends Controller
     }
 
     /**
-     * Store a new author.
+     * Store a new book.
      *
-     * @param StoreAuthorRequest
-     * @return AuthorResource|\Illuminate\Http\JsonResponse
+     * @param StoreBookRequest
+     * @return BookResource|\Illuminate\Http\JsonResponse
      */
-    public function store(StoreAuthorRequest $request)
+    public function store(StoreBookRequest $request)
     {
         // Validate the input data from the request
         $inputData = $request->validated();
 
         try {
-            // Call the service to store the author with the validated data
+            // Call the service to store the book with the validated data
             $response = $this->service->storeService($inputData);
 
-            // Return the created author resource
-            return new AuthorResource($response);
+            // Return the created book resource
+            return new BookResource($response);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong
             return response()->json([
@@ -83,20 +83,20 @@ class AuthorController extends Controller
     }
 
     /**
-     * Show the detail author.
+     * Show the detail book with author.
      *
-     * @param ParamAuthorRequest
+     * @param ParamBookRequest
      * @param int
-     * @return DetailAuthorResource|\Illuminate\Http\JsonResponse
+     * @return DetailBookResource|\Illuminate\Http\JsonResponse
      */
-    public function show(ParamAuthorRequest $request, int $id)
+    public function show(ParamBookRequest $request, int $id)
     {
         try {
-            // Call the service to find the author by id
+            // Call the service to find the book by id
             $response = $this->service->findService($id);
 
-            // Return the author detail resource
-            return new DetailAuthorResource($response);
+            // Return the book detail resource
+            return new DetailBookResource($response);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong
             return response()->json([
@@ -107,24 +107,24 @@ class AuthorController extends Controller
     }
 
     /**
-     * Update existing author.
+     * Update existing Book.
      *
-     * @param UpdateAuthorRequest
+     * @param UpdateBookRequest
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateAuthorRequest $request, int $id)
+    public function update(UpdateBookRequest $request, int $id)
     {
         // Validate the input data from the request
         $inputData = $request->validated();
 
         try {
-            // Call service to update author with validated data and id
+            // Call service to update book with validated data and id
             $this->service->updateService($inputData, $id);
 
             // Return a success response
             return response()->json([
                 'status' => 'success',
-                'message' => 'Successfully Updated Author.',
+                'message' => 'Successfully Updated Book.',
             ], 200);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong
@@ -136,22 +136,22 @@ class AuthorController extends Controller
     }
 
     /**
-     * Soft delete author.
+     * Soft delete book.
      *
-     * @param ParamAuthorRequest
+     * @param ParamBookRequest
      * @param int
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(ParamAuthorRequest $request, int $id)
+    public function destroy(ParamBookRequest $request, int $id)
     {
         try {
-            // Call the service to soft delete the author by id
+            // Call the service to soft delete the book by id
             $this->service->deleteService($id);
 
             // Return a success response
             return response()->json([
                 'status' => 'success',
-                'message' => 'Successfully Deleted Author.',
+                'message' => 'Successfully Deleted Book.',
             ], 200);
         } catch (\Throwable $th) {
             // Return an error response if something goes wrong

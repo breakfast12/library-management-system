@@ -168,7 +168,7 @@ class AuthorFeature extends Swagger
      *                  "total": 6
      *              },
      *              "status": "success",
-     *              "message": "Author data retrieved successfully."
+     *              "message": "Authors data retrieved successfully."
      *           }
      *        ),
      *     ),
@@ -226,8 +226,8 @@ class AuthorFeature extends Swagger
      *    ),
      *
      *    @OA\Response(
-     *        response=200,
-     *        description="Success",
+     *        response=201,
+     *        description="Created",
      *
      *        @OA\JsonContent(
      *           example={
