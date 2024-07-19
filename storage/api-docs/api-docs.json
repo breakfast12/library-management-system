@@ -902,6 +902,173 @@
                     }
                 ]
             }
+        },
+        "/api/books/{id}": {
+            "put": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Update book",
+                "description": "Update book and returns success response.",
+                "operationId": "796195cc1f4eaa389942335f9e9a1b9b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Book data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "title": "Laut Bercerita",
+                                "description": "Laut Bercerita adalah novel yang diterbitkan oleh Kepustakaan Populer Gramedia (KPG) Jakarta pada tahun 2017",
+                                "publish_date": "2017-10-23",
+                                "author_id": 1
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Updated Book."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Book ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Book ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-2": {
+                                        "summary": "Title is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "title": [
+                                                    "Title is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-3": {
+                                        "summary": "Description is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "description": [
+                                                    "Description is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-4": {
+                                        "summary": "Publish Date is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "publish_date": [
+                                                    "Publish Date is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-5": {
+                                        "summary": "Publish Date must be valid date.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "publish_date": [
+                                                    "Publish Date must be valid date."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-6": {
+                                        "summary": "Author is required.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "author_id": [
+                                                    "Author is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-7": {
+                                        "summary": "Author does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "author_id": [
+                                                    "Author does not exist."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "error-8": {
+                                        "summary": "Author ID must be valid integer.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "author_id": [
+                                                    "Author ID must be valid integer."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
         }
     },
     "tags": [

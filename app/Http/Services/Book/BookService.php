@@ -34,4 +34,17 @@ class BookService
         // Use the repository to store the book.
         return $this->repository->store($request);
     }
+
+    /**
+     * Update existing book.
+     *
+     * @param array
+     * @param int
+     * @return int
+     */
+    public function updateService(array $attributes, $id)
+    {
+        // Use the repository to update the book.
+        return $this->repository->update($attributes, $id);
+    }
 }
