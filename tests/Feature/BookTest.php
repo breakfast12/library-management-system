@@ -524,4 +524,50 @@ class BookTest extends TestCase
 
         $this->logout();
     }
+
+    #[Test]
+    public function cant_delete_book_cause_param_id_does_not_exist()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $response = $this->deleteJson(
+            route('api.books.update', ['id' => 99]),
+            [],
+            $this->token
+        );
+
+        $response->assertBadRequest();
+
+        $this->assertEquals('error', $response->json()['status']);
+        $this->assertEquals(
+            'Book ID does not exist.',
+            $response->json()['message']['id'][0]
+        );
+
+        $this->logout();
+    }
+
+    #[Test]
+    public function can_delete_book()
+    {
+        $this->token = $this->login('admin@mailinator.com', 'password');
+
+        $id = Book::first()->id;
+
+        $response = $this->deleteJson(
+            route('api.books.update', ['id' => $id]),
+            [],
+            $this->token
+        );
+
+        $response->assertOk();
+
+        $this->assertEquals('success', $response->json()['status']);
+        $this->assertEquals(
+            'Successfully Deleted Book.',
+            $response->json()['message']
+        );
+
+        $this->logout();
+    }
 }

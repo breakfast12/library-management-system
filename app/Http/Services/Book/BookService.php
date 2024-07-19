@@ -47,4 +47,16 @@ class BookService
         // Use the repository to update the book.
         return $this->repository->update($attributes, $id);
     }
+
+    /**
+     * Delete book by ID.
+     *
+     * @param int
+     * @return int
+     */
+    public function deleteService($id)
+    {
+        // Use the repository to delete the book.
+        return $this->repository->delete($id);
+    }
 }

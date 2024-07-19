@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Book;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Book\ParamBookRequest;
 use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Http\Resources\Book\BookResource;
@@ -93,8 +94,30 @@ class BookController extends Controller
         }
     }
 
-    public function destroy(int $id)
+    /**
+     * Soft delete book.
+     *
+     * @param ParamBookRequest
+     * @param int
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(ParamBookRequest $request, int $id)
     {
-        //
+        try {
+            // Call the service to soft delete the book by id
+            $this->service->deleteService($id);
+
+            // Return a success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully Deleted Book.',
+            ], 200);
+        } catch (\Throwable $th) {
+            // Return an error response if something goes wrong
+            return response()->json([
+                'status' => 'failed',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 }

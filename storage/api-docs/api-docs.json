@@ -1068,6 +1068,79 @@
                         "passport": []
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Delete Book",
+                "description": "Delete book data.",
+                "operationId": "527a43fc1e3c3784250ac4cdd1234269",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "status": "success",
+                                    "message": "Successfully Deleted Book."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Book ID does not exist.",
+                                        "value": {
+                                            "status": "error",
+                                            "message": {
+                                                "id": [
+                                                    "Book ID does not exist."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "error-1": {
+                                        "summary": "Unauthenticated.",
+                                        "value": {
+                                            "message": "Unauthenticated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
             }
         }
     },

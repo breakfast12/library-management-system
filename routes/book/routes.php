@@ -11,3 +11,5 @@ Route::post('/', [BookController::class, 'store'])
     ->name('api.books.store');
 Route::put('/{id}', [BookController::class, 'update'])
     ->name('api.books.update');
+Route::delete('/{id}', [BookController::class, 'destroy'])
+    ->name('api.books.destroy');

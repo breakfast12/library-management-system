@@ -352,4 +352,76 @@ class BookFeature extends Swagger
     {
         //
     }
+
+    /**
+     * @OA\Delete(
+     *    path="/api/books/{id}",
+     *    tags={"Book"},
+     *    summary="Delete Book",
+     *    description="Delete book data.",
+     *    security={{"passport":{}}},
+     *
+     *    @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=200,
+     *        description="Success",
+     *
+     *        @OA\JsonContent(
+     *           example={
+     *              "status": "success",
+     *              "message": "Successfully Deleted Book."
+     *           }
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=400,
+     *        description="Bad Request",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "status": "error",
+     *                  "message": {
+     *                      "id": {
+     *                          "Book ID does not exist."
+     *                      }
+     *                  }
+     *              },
+     *              summary="Book ID does not exist.",
+     *          ),
+     *        ),
+     *     ),
+     *
+     *     @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
+     *     ),
+     * )
+     */
+    public function destroy()
+    {
+        //
+    }
 }
