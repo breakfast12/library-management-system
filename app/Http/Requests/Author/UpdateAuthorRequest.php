@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Author;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Models\Author\Author;
 use App\Rules\AuthorUnique;
+use App\Rules\ExistsSoftDelete;
 
 class UpdateAuthorRequest extends BaseFormRequest
 {
@@ -23,10 +25,13 @@ class UpdateAuthorRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'id' => 'exists:authors,id',
+            'id' => [
+                new ExistsSoftDelete(Author::class,
+                    'Author ID does not exist.'),
+            ],
             'name' => [
-                'required',
-                new AuthorUnique($this->route('id')),
+                    'required',
+                    new AuthorUnique($this->route('id')),
             ],
             'bio' => 'required',
             'birth_date' => 'required|date',
@@ -41,7 +46,6 @@ class UpdateAuthorRequest extends BaseFormRequest
     public function messages()
     {
         return [
-            'id.exists' => 'Author ID does not exist.',
             'name.required' => 'Name is required.',
             'bio.required' => 'Bio is required.',
             'birth_date.required' => 'Birth date is required.',

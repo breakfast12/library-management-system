@@ -32,7 +32,7 @@ class BookFeature extends Swagger
      *            type="string",
      *            format="date"
      *        ),
-     *        description="Filter book publish after this date"
+     *        description="Filter book publish after this date (format: YYYY-MM-DD or YYYY/MM/DD)"
      *    ),
      *
      *    @OA\Parameter(
@@ -43,7 +43,7 @@ class BookFeature extends Swagger
      *            type="string",
      *            format="date"
      *        ),
-     *        description="Filter book publish before this date"
+     *        description="Filter book publish before this date (format: YYYY-MM-DD or YYYY/MM/DD)"
      *    ),
      *
      *    @OA\Parameter(
@@ -267,6 +267,7 @@ class BookFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -434,6 +435,7 @@ class BookFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -518,6 +520,7 @@ class BookFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -698,6 +701,7 @@ class BookFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -770,6 +774,7 @@ class BookFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",

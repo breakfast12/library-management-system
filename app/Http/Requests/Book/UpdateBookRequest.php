@@ -3,6 +3,9 @@
 namespace App\Http\Requests\Book;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Models\Author\Author;
+use App\Models\Book\Book;
+use App\Rules\ExistsSoftDelete;
 
 class UpdateBookRequest extends BaseFormRequest
 {
@@ -22,11 +25,19 @@ class UpdateBookRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'id' => 'exists:books,id',
+            'id' => [
+                new ExistsSoftDelete(Book::class,
+                    'Book ID does not exist.'),
+            ],
             'title' => 'required',
             'description' => 'required',
             'publish_date' => 'required|date',
-            'author_id' => 'required|integer|exists:authors,id',
+            'author_id' => [
+                    'required',
+                    'integer',
+                    new ExistsSoftDelete(Author::class,
+                        'Author does not exist.'),
+            ],
         ];
     }
 
@@ -38,14 +49,12 @@ class UpdateBookRequest extends BaseFormRequest
     public function messages()
     {
         return [
-            'id.exists' => 'Book ID does not exist.',
             'title.required' => 'Title is required.',
             'description.required' => 'Description is required.',
             'publish_date.required' => 'Publish Date is required.',
             'publish_date.date' => 'Publish Date must be valid date.',
             'author_id.required' => 'Author is required.',
             'author_id.integer' => 'Author ID must be valid integer.',
-            'author_id.exists' => 'Author does not exist.',
         ];
     }
 }

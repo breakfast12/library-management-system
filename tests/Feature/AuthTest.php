@@ -116,4 +116,18 @@ class AuthTest extends TestCase
             $response->json()['message']
         );
     }
+
+    #[Test]
+    public function unauthenticated_test()
+    {
+        $response = $this->postJson(route('api.auth.logout'));
+
+        $response->assertUnauthorized();
+
+        $this->assertEquals('failed', $response->json()['status']);
+        $this->assertEquals(
+            'Unauthenticated.',
+            $response->json()['message']
+        );
+    }
 }

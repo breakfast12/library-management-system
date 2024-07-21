@@ -1255,4 +1255,17 @@ class BookTest extends TestCase
 
         $this->logout();
     }
+
+    #[Test]
+    public function unauthorized_test()
+    {
+        $response = $this->getJson(
+            route('api.books.index')
+        );
+
+        $response->assertUnauthorized();
+
+        $this->assertEquals('failed', $response->json()['status']);
+        $this->assertEquals('Unauthenticated.', $response->json()['message']);
+    }
 }

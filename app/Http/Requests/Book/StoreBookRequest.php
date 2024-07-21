@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Book;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Models\Author\Author;
+use App\Rules\ExistsSoftDelete;
 
 class StoreBookRequest extends BaseFormRequest
 {
@@ -25,7 +27,12 @@ class StoreBookRequest extends BaseFormRequest
             'title' => 'required',
             'description' => 'required',
             'publish_date' => 'required|date',
-            'author_id' => 'required|integer|exists:authors,id',
+            'author_id' => [
+                'required',
+                'integer',
+                new ExistsSoftDelete(Author::class,
+                    'Author does not exist.'),
+            ],
         ];
     }
 
@@ -43,7 +50,6 @@ class StoreBookRequest extends BaseFormRequest
             'publish_date.date' => 'Publish Date must be valid date.',
             'author_id.required' => 'Author is required.',
             'author_id.integer' => 'Author ID must be valid integer.',
-            'author_id.exists' => 'Author does not exist.',
         ];
     }
 }

@@ -2,10 +2,15 @@
 
 namespace App\Http\Services\Author;
 
+use App\Http\Traits\FlushCacheTrait;
 use App\Repositories\Contracts\Author\AuthorContract;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class AuthorService
 {
+    use FlushCacheTrait;
+
     /**
      * The author repository instance.
      *
@@ -37,6 +42,7 @@ class AuthorService
         $orderBy = request('order_by', 'created_at');
         $order = request('order', 'desc');
         $perPage = request('per_page', 10);
+        $page = request('page', 1);
 
         // Retrieve authors from the repository with filters.
         return $this->repository->getAuthors(
@@ -46,6 +52,7 @@ class AuthorService
             $orderBy,
             $order,
             $perPage,
+            $page
         );
     }
 
@@ -57,8 +64,19 @@ class AuthorService
      */
     public function storeService(array $request)
     {
-        // Use the repository to store the author.
-        return $this->repository->store($request);
+        $author = DB::transaction(function () use ($request) {
+            // Use the repository to store the author.
+            return $this->repository->store($request);
+        });
+
+        // Flush multiple cache tags
+        $this->flushCache([
+            'authors',
+            "author_{$author->id}",
+            "books_author_{$author->id}",
+        ]);
+
+        return $author;
     }
 
     /**
@@ -69,8 +87,14 @@ class AuthorService
      */
     public function findService($id)
     {
-        // Use the repository to find the author.
-        return $this->repository->find($id);
+        // Generate a cache key based on the given parameters
+        $cacheKey = "author_detail_{$id}";
+
+        // Retrieve cached results or execute the query if not cached
+        return Cache::tags(['authors'])->remember($cacheKey, 3600, function () use ($id) {
+            // Use the repository to find the author.
+            return $this->repository->find($id);
+        });
     }
 
     /**
@@ -82,8 +106,19 @@ class AuthorService
      */
     public function updateService(array $attributes, $id)
     {
-        // Use the repository to update the author.
-        return $this->repository->update($attributes, $id);
+        $author = DB::transaction(function () use ($attributes, $id) {
+            // Use the repository to update the author.
+            return $this->repository->update($attributes, $id);
+        });
+
+        // Flush multiple cache tags
+        $this->flushCache([
+            'authors',
+            "author_{$id}",
+            "books_author_{$id}",
+        ]);
+
+        return $author;
     }
 
     /**
@@ -94,8 +129,19 @@ class AuthorService
      */
     public function deleteService($id)
     {
-        // Use the repository to delete the author.
-        return $this->repository->delete($id);
+        $author = DB::transaction(function () use ($id) {
+            // Use the repository to delete the author.
+            return $this->repository->delete($id);
+        });
+
+        // Flush multiple cache tags
+        $this->flushCache([
+            'authors',
+            "author_{$id}",
+            "books_author_{$id}",
+        ]);
+
+        return $author;
     }
 
     /**
@@ -108,12 +154,14 @@ class AuthorService
         // Get search and filter parameters from the request.
         $sort = request('sort', 'desc');
         $perPage = request('per_page', 10);
+        $page = request('page', 1);
 
         // Retrieve author catalogue from the repository with filters.
         return $this->repository->findWithBook(
             $id,
             $perPage,
             $sort,
+            $page
         );
     }
 }
