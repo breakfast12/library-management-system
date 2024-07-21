@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Library Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Requirements
 
-## About Laravel
+-   PHP 8.2
+-   Composer
+-   Laravel 11
+-   MySQL
+-   Passport
+-   l5-swagger
+-   Redis
+-   Laravel Pint
+-   Laravel-Telescope
+-   phpunit
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1.  If you are ready with PHP 8.2, Composer, MySQL, Redis (also install PHP Redis Extension).
+    You can clone this repository.
+    `git clone https://github.com/breakfast12/library-management-system.git`
+2.  Install Composer dependencies: `composer install`.
+3.  Regenerate Composer autoload files: `composer dump-autoload`.
+4.  Copy .env.example and rename file to `.env` and `.env.testing` and then configure your environment variables.
+    besides configuring the database, also configure the cache (redis) like this to `.env` and `.env.testing`:
+    ```
+        SESSION_DRIVER=redis
+        CACHE_STORE=redis
+        CACHE_DRIVER=redis
+        REDIS_CLIENT=phpredis
+        REDIS_HOST=127.0.0.1
+        REDIS_PASSWORD=null
+        REDIS_PORT=6379
+    ```
+    Change the `APP_ENV` content in the `.env.testing` to testing
+    Fill `API_SECRET_KEY` in `.env` and `.env.testing`
+5.  Generate application key: `php artisan key:generate`.
+    (Note: after run `php artisan key:generate` copy value APP_KEY of `.env` to APP_KEY of `.env.testing`)
+6.  Migrate DB and seed table:
+    -   `php artisan migrate`
+    -   `php artisan db:seed`
+7.  Install Key Passport: `php artisan passport:keys`
+8.  Publish the Passport configuration file: `php artisan vendor:publish --tag=passport-config`
+9.  Create necessary storage links: `php artisan storage:link`
+10. Generate Swagger documentation: `php artisan l5-swagger:generate`
+11. Publish Laravel Telescope: `php artisan telescope:publish`
+12. Copy phpunit.xml.example to `phpunit.xml` and then configure your environment testing.
+    ```<php>
+            <server name="APP_ENV" value="testing"/>
+            <server name="BCRYPT_ROUNDS" value="4"/>
+            <server name="CACHE_DRIVER" value="array"/>
+            <server name="DB_CONNECTION" value="mysql"/>
+            <server name='DB_USERNAME' value="your_username_db"/>
+            <server name='DB_PASSWORD' value="your_password_db"/>
+            <server name="DB_DATABASE" value="db_testing"/>
+            <server name="MAIL_MAILER" value="array"/>
+            <server name="QUEUE_CONNECTION" value="sync"/>
+            <server name="SESSION_DRIVER" value="array"/>
+            <server name="TELESCOPE_ENABLED" value="false"/>
+        </php>
+    ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Running the Application
 
-## Learning Laravel
+1. Run the application: `php artisan serve`
+2. Access the application at: http://127.0.0.1:8000 or http://localhost:8000
+3. Access Swagger documentation at: http://localhost:8000/api/documentation or http://127.0.0.1:8000/api/documentation
+4. Access Telescope for monitor the application performance: http://127.0.0.1:8000/telescope or http://localhost:8000/telescope
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Running Tests
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Run unit test: `php artisan run:tests --env=testing`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Note:
 
-## Laravel Sponsors
+-   Create 2 DB, 1 for development and 1 for unit test
+-   API_SECRET_KEY in `.env` and `.env.testing` for create bearer token (example: abc, project123, or something)
+-   Make sure the redis is running
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[Performance Tuning and Design Patterns](performance-tuning-design-pattern.md)
