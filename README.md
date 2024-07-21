@@ -68,7 +68,7 @@
 
 ## Running Tests
 
-1. Run unit test: `php artisan run:test --env=testing`
+1. Run unit test: `php artisan run:tests --env=testing`
 
 ## Note:
 
