@@ -2,10 +2,14 @@
 
 namespace App\Http\Services\Book;
 
+use App\Http\Traits\FlushCacheTrait;
 use App\Repositories\Contracts\Book\BookContract;
+use Illuminate\Support\Facades\DB;
 
 class BookService
 {
+    use FlushCacheTrait;
+
     /**
      * The book repository instance.
      *
@@ -37,6 +41,7 @@ class BookService
         $orderBy = request('order_by', 'created_at');
         $order = request('order', 'desc');
         $perPage = request('per_page', 10);
+        $page = request('page', 1);
 
         // Retrieve books from the repository with filters.
         return $this->repository->getBooks(
@@ -46,6 +51,7 @@ class BookService
             $orderBy,
             $order,
             $perPage,
+            $page,
         );
     }
 
@@ -57,8 +63,19 @@ class BookService
      */
     public function storeService(array $request)
     {
-        // Use the repository to store the book.
-        return $this->repository->store($request);
+        $book = DB::transaction(function () use ($request) {
+            // Use the repository to store the book.
+            return $this->repository->store($request);
+        });
+
+        // Flush multiple cache tags
+        $this->flushCache([
+            'books',
+            "author_{$book->author_id}",
+            "books_author_{$book->author_id}",
+        ]);
+
+        return $book;
     }
 
     /**
@@ -82,8 +99,27 @@ class BookService
      */
     public function updateService(array $attributes, $id)
     {
-        // Use the repository to update the book.
-        return $this->repository->update($attributes, $id);
+        // Retrieve the current author_id before updating
+        $currentAuthorId = $this->repository->find($id)->author_id;
+
+        $book = DB::transaction(function () use ($attributes, $id) {
+            // Use the repository to update the book.
+            return $this->repository->update($attributes, $id);
+        });
+
+        // Retrieve the new author_id after updating
+        $newAuthorId = $attributes['author_id'];
+
+        // Flush multiple cache tags
+        $this->flushCache([
+            'books',
+            "author_{$currentAuthorId}",
+            "books_author_{$currentAuthorId}",
+            "author_{$newAuthorId}",
+            "books_author_{$newAuthorId}",
+        ]);
+
+        return $book;
     }
 
     /**
@@ -94,7 +130,20 @@ class BookService
      */
     public function deleteService($id)
     {
-        // Use the repository to delete the book.
-        return $this->repository->delete($id);
+        $authorId = $this->repository->find($id)->author_id;
+
+        $book = DB::transaction(function () use ($id) {
+            // Use the repository to delete the book.
+            return $this->repository->delete($id);
+        });
+
+        // Flush multiple cache tags
+        $this->flushCache([
+            'books',
+            "author_{$authorId}",
+            "books_author_{$authorId}",
+        ]);
+
+        return $book;
     }
 }

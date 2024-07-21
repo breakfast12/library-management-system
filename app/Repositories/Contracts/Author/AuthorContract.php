@@ -12,8 +12,9 @@ interface AuthorContract
         $birthDateTo,
         $orderBy,
         $order,
-        $perPage
+        $perPage,
+        $page
     );
 
-    public function findWithBook($id, $perPage, $sortOrder);
+    public function findWithBook($id, $perPage, $sortOrder, $page);
 }

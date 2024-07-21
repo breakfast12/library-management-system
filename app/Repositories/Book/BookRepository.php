@@ -5,6 +5,7 @@ namespace App\Repositories\Book;
 use App\Models\Book\Book;
 use App\Repositories\BaseRepository;
 use App\Repositories\Contracts\Book\BookContract;
+use Illuminate\Support\Facades\Cache;
 
 class BookRepository extends BaseRepository implements BookContract
 {
@@ -48,8 +49,14 @@ class BookRepository extends BaseRepository implements BookContract
      */
     public function findWithAuthor($id)
     {
-        // Retrieve the book by id with author data
-        return $this->book->with('author')->find($id);
+        // Generate a cache key based on the given parameters
+        $cacheKey = "book_with_author_{$id}";
+
+        // Retrieve cached results or execute the query if not cached
+        return Cache::tags(['books'])->remember($cacheKey, 3600, function () use ($id) {
+            // Retrieve the book by id with author data
+            return $this->book->with('author')->find($id);
+        });
     }
 
     /**
@@ -69,49 +76,63 @@ class BookRepository extends BaseRepository implements BookContract
         $publishDateTo,
         $orderBy,
         $order,
-        $perPage
+        $perPage,
+        $page
     ) {
-        // Main query
-        $query = $this->book->with('author');
+        // Generate a cache key based on the given parameters
+        $cacheKey = "books_index_{$search}_{$publishDateFrom}_{$publishDateTo}_{$orderBy}_{$order}_{$perPage}_page_{$page}";
 
-        // Filter by search term if provided.
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%'.$search.'%')
-                    ->orWhere('description', 'like', '%'.$search.'%')
-                    ->orWhereHas('author', function ($q) use ($search) {
-                        $q->where('name', 'like', '%'.$search.'%');
-                    });
-            });
-        }
+        // Retrieve cached results or execute the query if not cached
+        return Cache::tags(['books'])->remember($cacheKey, 3600, function () use (
+            $search,
+            $publishDateFrom,
+            $publishDateTo,
+            $orderBy,
+            $order,
+            $perPage
+        ) {
+            // Main query
+            $query = $this->book->with('author');
 
-        // Filter by publish date range if start and end dates are provided.
-        if ($publishDateFrom && $publishDateTo) {
-            $query->whereBetween('publish_date', [$publishDateFrom, $publishDateTo]);
-        } elseif ($publishDateFrom) {
-            // Filter by start date if only start date is provided.
-            $query->where('publish_date', '>=', $publishDateFrom);
-        } elseif ($publishDateTo) {
-            // Filter by end date if only end date is provided.
-            $query->where('publish_date', '<=', $publishDateTo);
-        }
-
-        // Sorting.
-        if ($orderBy == 'author_name') {
-            // Join with authors for sorting by author name.
-            $query->join('authors', 'books.author_id', '=', 'authors.id')
-                ->orderBy('authors.name', $order)
-                ->select('books.*');
-        } else {
-            // Default sorting handling.
-            if (! in_array($orderBy, $this->allowedColumns)) {
-                $orderBy = 'created_at';
+            // Filter by search term if provided.
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%'.$search.'%')
+                        ->orWhere('description', 'like', '%'.$search.'%')
+                        ->orWhereHas('author', function ($q) use ($search) {
+                            $q->where('name', 'like', '%'.$search.'%');
+                        });
+                });
             }
 
-            $query->orderBy($orderBy, $order);
-        }
+            // Filter by publish date range if start and end dates are provided.
+            if ($publishDateFrom && $publishDateTo) {
+                $query->whereBetween('publish_date', [$publishDateFrom, $publishDateTo]);
+            } elseif ($publishDateFrom) {
+                // Filter by start date if only start date is provided.
+                $query->where('publish_date', '>=', $publishDateFrom);
+            } elseif ($publishDateTo) {
+                // Filter by end date if only end date is provided.
+                $query->where('publish_date', '<=', $publishDateTo);
+            }
 
-        // Return paginated results.
-        return $query->paginate($perPage);
+            // Sorting.
+            if ($orderBy == 'author_name') {
+                // Join with authors for sorting by author name.
+                $query->join('authors', 'books.author_id', '=', 'authors.id')
+                    ->orderBy('authors.name', $order)
+                    ->select('books.*');
+            } else {
+                // Default sorting handling.
+                if (! in_array($orderBy, $this->allowedColumns)) {
+                    $orderBy = 'created_at';
+                }
+
+                $query->orderBy($orderBy, $order);
+            }
+
+            // Return paginated results.
+            return $query->paginate($perPage);
+        });
     }
 }

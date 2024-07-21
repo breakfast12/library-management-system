@@ -138,6 +138,23 @@ class AuthenticationFeature extends Swagger
      *               }
      *           }
      *        ),
+     *    ),
+     *
+     *    @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *
+     *        @OA\JsonContent(
+     *
+     *          @OA\Examples(
+     *              example="error-1",
+     *              value={
+     *                  "status": "failed",
+     *                  "message": "Unauthenticated."
+     *              },
+     *              summary="Unauthenticated.",
+     *          ),
+     *        ),
      *     ),
      * )
      */

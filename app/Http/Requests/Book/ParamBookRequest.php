@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Book;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Models\Book\Book;
+use App\Rules\ExistsSoftDelete;
 
 class ParamBookRequest extends BaseFormRequest
 {
@@ -22,19 +24,10 @@ class ParamBookRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'id' => 'exists:books,id',
-        ];
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'id.exists' => 'Book ID does not exist.',
+            'id' => [
+                new ExistsSoftDelete(Book::class,
+                    'Book ID does not exist.'),
+            ],
         ];
     }
 }

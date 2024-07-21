@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Author;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Models\Author\Author;
+use App\Rules\ExistsSoftDelete;
 
 class ParamAuthorRequest extends BaseFormRequest
 {
@@ -22,19 +24,10 @@ class ParamAuthorRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'id' => 'exists:authors,id',
-        ];
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'id.exists' => 'Author ID does not exist.',
+            'id' => [
+                new ExistsSoftDelete(Author::class,
+                    'Author ID does not exist.'),
+            ],
         ];
     }
 }

@@ -32,7 +32,7 @@ class AuthorFeature extends Swagger
      *            type="string",
      *            format="date"
      *        ),
-     *        description="Filter authors born after this date"
+     *        description="Filter authors born after this date (format: YYYY-MM-DD or YYYY/MM/DD)"
      *    ),
      *
      *    @OA\Parameter(
@@ -43,7 +43,7 @@ class AuthorFeature extends Swagger
      *            type="string",
      *            format="date"
      *        ),
-     *        description="Filter authors born before this date"
+     *        description="Filter authors born before this date (format: YYYY-MM-DD or YYYY/MM/DD)"
      *    ),
      *
      *    @OA\Parameter(
@@ -182,6 +182,7 @@ class AuthorFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -322,6 +323,7 @@ class AuthorFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -402,6 +404,7 @@ class AuthorFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -556,6 +559,7 @@ class AuthorFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -628,6 +632,7 @@ class AuthorFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
@@ -696,14 +701,89 @@ class AuthorFeature extends Swagger
      *        @OA\JsonContent(
      *           example={
      *              "status": "success",
-     *              "message": "Successfully Show Detail Author.",
+     *              "message": "Successfully Show Author Catalogue.",
      *              "data": {
      *                  "id": 1,
-     *                  "name": "Budi",
-     *                  "bio": "Hidup harus dicobain",
-     *                  "birth_date": "1998-10-10",
-     *                  "created_at": "2024-07-17 14:03:43",
-     *                  "updated_at": "2024-07-17 14:45:43"
+     *                  "name": "Sylvester Robert",
+     *                  "bio": "lorem ipsum",
+     *                  "birth_date": "2000-02-15",
+     *                  "books": {
+     *                      "data": {
+     *                          {
+     *                              "id": 5,
+     *                              "title": "Melihat Pengarang Tidak Bekerja",
+     *                              "publish_date": "2022-05-22"
+     *                          },
+     *                          {
+     *                              "id": 2,
+     *                              "title": "Wingit",
+     *                              "publish_date": "2020-12-15"
+     *                          },
+     *                          {
+     *                              "id": 1,
+     *                              "title": "Melangkah",
+     *                              "publish_date": "2020-03-22"
+     *                          },
+     *                          {
+     *                              "id": 4,
+     *                              "title": "Di Hadapan Rahasia",
+     *                              "publish_date": "2020-01-19"
+     *                          },
+     *                          {
+     *                              "id": 8,
+     *                              "title": "Today I Miss You",
+     *                              "publish_date": "2019-12-22"
+     *                          },
+     *                          {
+     *                              "id": 7,
+     *                              "title": "Arah Musim",
+     *                              "publish_date": "2019-10-13"
+     *                          },
+     *                          {
+     *                              "id": 9,
+     *                              "title": "Tanah Putih",
+     *                              "publish_date": "2019-08-31"
+     *                          },
+     *                          {
+     *                              "id": 11,
+     *                              "title": "Derana",
+     *                              "publish_date": "2019-06-12"
+     *                          }
+     *                      },
+     *                      "links": {
+     *                          "first": "http://127.0.0.1:8000/api/authors/1/books?page=1",
+     *                          "last": "http://127.0.0.1:8000/api/authors/1/books?page=1",
+     *                          "prev": null,
+     *                          "next": null
+     *                      },
+     *                      "meta": {
+     *                          "current_page": 1,
+     *                          "from": 1,
+     *                          "last_page": 1,
+     *                          "links": {
+     *                              {
+     *                                  "url": null,
+     *                                  "label": "&laquo; Previous",
+     *                                  "active": false
+     *                              },
+     *                              {
+     *                                  "url": "http://127.0.0.1:8000/api/authors/1/books?page=1",
+     *                                  "label": "1",
+     *                                  "active": true
+     *                              },
+     *                              {
+     *                                  "url": null,
+     *                                  "label": "Next &raquo;",
+     *                                  "active": false
+     *                              }
+     *                          },
+     *                          "path": "http://127.0.0.1:8000/api/authors/1/books",
+     *                          "per_page": 10,
+     *                          "to": 8,
+     *                          "total": 8,
+     *                          "total_books": 8
+     *                      }
+     *                  }
      *              }
      *           }
      *        ),
@@ -739,6 +819,7 @@ class AuthorFeature extends Swagger
      *          @OA\Examples(
      *              example="error-1",
      *              value={
+     *                  "status": "failed",
      *                  "message": "Unauthenticated."
      *              },
      *              summary="Unauthenticated.",
